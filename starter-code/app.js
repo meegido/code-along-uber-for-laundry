@@ -6,13 +6,20 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const authenticated = require('./middlewares/authenticated');
 const session = require('./middlewares/session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth');
 
-mongoose.connect('mongodb://localhost/uberlaundry');
+
+mongoose.connect('mongodb://localhost/uberlaundry')
+// if (process.env.NODE_ENV === 'development') {
+//   require('dotenv').config()
+// }
+//
+// mongoose.connect(process.env.MONGO_URI);
 
 var app = express();
 
@@ -30,6 +37,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session(mongoose.connection));
+app.use(authenticated);
+//app.use(session(mongooseConnection));
 
 app.use('/', index);
 app.use('/users', users);
