@@ -8,3 +8,5 @@ module.exports = (req, res, next) =>  {
 
   next();
 };
+
+//les queremos dar a todas las plantillas esto así que middleware.

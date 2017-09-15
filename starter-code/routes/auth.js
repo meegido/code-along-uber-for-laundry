@@ -1,8 +1,13 @@
+const path = require('path')
 const express = require('express');
 const bcrypt = require('bcrypt');
+const multer = require('multer'); //es un objeto y tiene método single (solo un archivo con nombre que digamos)
+const User = require('../models/user');
+
 const router = express.Router();
 const bcryptSalt = 10;
-const User = require('../models/user');
+const destination = path.join(__dirname, '../public/avatars/')
+const upload = multer({ dest: destination })
 
 
 router.get('/signup', (req, res, next) => {
@@ -11,10 +16,14 @@ router.get('/signup', (req, res, next) => {
   });
 });
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', upload.single('avatar'), (req, res, next) => {
   const nameInput = req.body.name;
   const emailInput = req.body.email;
   const passwordInput = req.body.password;
+
+  console.log('\n\n\n\n')
+  console.log(req.file)
+  console.log('\n\n\n\n')
 
   if (emailInput === '' || passwordInput === '') {
     res.render('auth/signup', {
@@ -40,6 +49,7 @@ router.post('/signup', (req, res, next) => {
     const hashedPass = bcrypt.hashSync(passwordInput, salt);
 
     const userSubmission = {
+      avatar: `/avatars/${req.file.filename}`,
       name: nameInput,
       email: emailInput,
       password: hashedPass
@@ -93,7 +103,7 @@ router.post('/login', (req, res, next) => {
       return;
     }
 
-    req.session.currentUser = theUser;
+    req.session.currentUser = theUser; //de aquí vamos al middleware
     res.redirect('/');
   });
 });
