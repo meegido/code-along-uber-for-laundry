@@ -5,10 +5,12 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const expressLayouts = require('express-ejs-layouts');
-
+const mongoose = require('mongoose');
 var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth');
+
+mongoose.connect('mongodb://localhost/uberlaundry');
 
 var app = express();
 
