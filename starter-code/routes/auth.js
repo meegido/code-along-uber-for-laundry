@@ -56,10 +56,14 @@ router.post('/signup', (req, res, next) => {
      }
 
      res.redirect('/');
-     
+
    });
   });
 });
 
-
+router.get('/login', (req, res, next) => {
+  res.render('auth/login', {
+    errorMessage: ''
+  });
+});
 module.exports = router;
