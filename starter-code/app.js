@@ -12,6 +12,7 @@ const session = require('./middlewares/session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 const authRoutes = require('./routes/auth');
+const laundryRoutes = require('./routes/laundry')
 
 
 mongoose.connect('mongodb://localhost/uberlaundry')
@@ -43,6 +44,7 @@ app.use(authenticated);
 app.use('/', index);
 app.use('/users', users);
 app.use('/', authRoutes);
+app.use('/', laundryRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
