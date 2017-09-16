@@ -2,9 +2,10 @@
 
 <% if (isUserLoggedIn) { %>
   <p> Hello, <%= currentUserInfo.name %>. </p>
+  <img src="<% currentUserInfo.avatar %>">
 <% } %>
 
-<img src="<% currentUserInfo.avatar %>">
+
 
 <nav>
   <ul>

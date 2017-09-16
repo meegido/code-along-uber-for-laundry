@@ -17,6 +17,7 @@ router.get('/signup', (req, res, next) => {
 });
 
 router.post('/signup', upload.single('avatar'), (req, res, next) => {
+  const avatarInput = req.body.avatar;
   const nameInput = req.body.name;
   const emailInput = req.body.email;
   const passwordInput = req.body.password;
@@ -103,9 +104,27 @@ router.post('/login', (req, res, next) => {
       return;
     }
 
-    req.session.currentUser = theUser; //de aquí vamos al middleware
+    req.session.currentUser = theUser; //de aquí vamos al middleware... local!
     res.redirect('/');
   });
 });
+
+router.get('/logout', (req, res, next) => {
+  console.log(req.session)
+  if(!req.session.currentUser) {
+    res.redirect('/');
+    return;
+  }
+
+  req.session.destroy((err) => {
+    console.log("HOLAAAAAAAAAAAAAAAAA")
+    if (err) {
+      next(err);
+      return;
+    }
+  })
+  res.redirect('/')
+})
+
 
 module.exports = router;
