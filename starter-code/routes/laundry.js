@@ -23,6 +23,17 @@ router.get('/launderers', (req, res, next) => {
   });
 });
 
+router.get('/launderers/:id', (req, res, next) => {
+  const laundererId = req.params.id;
+
+  User.findById(laundererId, (err, theUser) => {
+    if (err) {
+      return next(err);
+    }
+    res.render('laundry/launderer-profile', { theLaunderer: theUser });
+  });
+});
+
 router.post('/launderers', (req, res, next) => {
   const userId = req.session.currentUser._id;
   const laundererInfo = {
