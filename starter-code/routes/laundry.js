@@ -20,6 +20,7 @@ router.post('/launderers', (req, res, next) => {
     }
 
     req.session.currentUser = theUser;
+    
 
     res.redirect('/dashboard');
   });

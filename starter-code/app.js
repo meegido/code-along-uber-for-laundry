@@ -9,20 +9,20 @@ const mongoose = require('mongoose');
 const authenticated = require('./middlewares/authenticated');
 const session = require('./middlewares/session');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+const index = require('./routes/index');
+const users = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const laundryRoutes = require('./routes/laundry')
 
 
-mongoose.connect('mongodb://localhost/uberlaundry')
-// if (process.env.NODE_ENV === 'development') {
-//   require('dotenv').config()
-// }
-//
-// mongoose.connect(process.env.MONGO_URI);
+//mongoose.connect('mongodb://localhost/uberlaundry')
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
 
-var app = express();
+mongoose.connect(process.env.MONGO_URI);
+
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
