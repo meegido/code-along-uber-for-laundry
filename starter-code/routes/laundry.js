@@ -13,7 +13,25 @@ router.use((req, res, next) => {
 });
 
 router.get('/dashboard', (req, res, next) => {
-  res.render('laundry/dashboard');
+  let query = { launderer: req.session.currentUser._id };
+
+  if(!req.session.currentUser.isLaunderer) {
+    query = { user: req.session.currentUser._id };
+  }
+
+  LaundryPickup
+    .find(query)
+    .populate('user', 'name')
+    .populate('launderer', 'name')
+    .sort('pickupDate')
+    .exec((err, pickupDocs) => {
+      if(err) {
+        return next(err);
+      }
+      res.render('laundry/dashboard', {
+        pickups: pickupDocs
+      });
+    });
 });
 
 router.get('/launderers', (req, res, next) => {
