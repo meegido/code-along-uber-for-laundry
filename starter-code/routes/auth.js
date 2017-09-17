@@ -22,9 +22,9 @@ router.post('/signup', upload.single('avatar'), (req, res, next) => {
   const emailInput = req.body.email;
   const passwordInput = req.body.password;
 
-  console.log('\n\n\n\n')
-  console.log(req.file)
-  console.log('\n\n\n\n')
+  // console.log('\n\n\n\n')
+  // console.log(req.file)
+  // console.log('\n\n\n\n')
 
   if (emailInput === '' || passwordInput === '') {
     res.render('auth/signup', {
@@ -33,17 +33,14 @@ router.post('/signup', upload.single('avatar'), (req, res, next) => {
     return;
   }
 
-  User.findOne({ email: emailInput }, '_id', (err, existingUser) => { //dónde defino existingUSer???????
-    if (err) {
-      next(err);
-      return;
-    }
+  User.findOne({ email: emailInput }, '_id', (err, existingUser) => { //existingUser 2º param del cb, exito
+    if (err) { return next(err); }
 
-    if (existingUser !== null) {
-      res.render('auth/signup', {
+    if (existingUser) {
+      return res.render('auth/signup', {
         errorMessage: `The email ${emailInput} is already in use.`
       });
-      return;
+
     }
 
     const salt = bcrypt.genSaltSync(bcryptSalt);
@@ -117,7 +114,6 @@ router.get('/logout', (req, res, next) => {
   }
 
   req.session.destroy((err) => {
-    console.log("HOLAAAAAAAAAAAAAAAAA")
     if (err) {
       next(err);
       return;
